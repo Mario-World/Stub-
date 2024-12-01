@@ -9,17 +9,17 @@ const [authToken, setAuthToken] = useState(null);
 const handleGoogleLogin = async (credentialResponse) => {
  const idToken = credentialResponse.credential;
 
- console.log(credentialResponse)
-//   authenticate(idToken, (authResponse, error) => {
 
-//     console.log(authResponse)
-//       if (authResponse) {
-//         setAuthToken(authResponse.auth_token);
-//         console.log("Authenticated successfully, auth token:", authResponse.auth_token);
-//       } else if (error) {
-//             console.error("Authentication error:", error);
-//         }
-//     });
+  authenticate(idToken, (authResponse, error) => {
+
+
+      if (authResponse) {
+        setAuthToken(authResponse.auth_token);
+        console.log("Authenticated successfully, auth token:", authResponse.auth_token);
+      } else if (error) {
+            console.error("Authentication error:", error);
+        }
+    });
  };
 
  return (
