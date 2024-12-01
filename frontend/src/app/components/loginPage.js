@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+
+import { useState } from "react";
 import { useOkto } from "okto-sdk-react";
+
 import { GoogleLogin } from "@react-oauth/google";
+
 
 function LoginPage() {
 const { authenticate } = useOkto();
 const [authToken, setAuthToken] = useState(null);
 
+
+console.log(useOkto)
 const handleGoogleLogin = async (credentialResponse) => {
  const idToken = credentialResponse.credential;
 
