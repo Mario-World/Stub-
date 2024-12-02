@@ -1,15 +1,10 @@
 import Link from 'next/link';
-import { useOkto } from 'okto-sdk-react';
+import LoginPage from './loginPage';
+import useUserDetails from "./store";
 
-const HeaderComponent = () => {
 
-
-    const { isLoggedIn,  logOut} = useOkto();
-
-    const handleLogout = async () => {
-
-         await logOut();
-    }
+const HeaderComponent = ({ setPresentPage }) => {
+    const token = useUserDetails((state) => state.token);
 
     return (
         <>
@@ -19,20 +14,17 @@ const HeaderComponent = () => {
 
                         <Link href={'/'}> Stub</Link>
                     </div>
+
                     <div className="flex space-x-6">
-                        <div>
-                            <Link href={'/buyer'} className="hover:text-gray-300 transition">
-                                Buyer
-                            </Link>
-                        </div>
-                        <div>
-                            <Link href={'/seller'} className="hover:text-gray-300 transition">
-                                Seller
-                            </Link>
-                        </div>
-                        {isLoggedIn == true ? <button onClick={handleLogout} className=''> Log out</button> : <></>}
+
+
+                        {token && <Link href={'/profile'} className=''> Profile</Link>}
+                        <div> <LoginPage /></div>
 
                     </div>
+
+
+
                 </div>
             </header>
         </>

@@ -4,6 +4,15 @@ import { useOkto } from 'okto-sdk-react';
 import Image from "next/image";
 const BuyerPage = () => {
     const { isLoggedIn, logout } = useOkto();
+
+
+    if (isLoggedIn) {
+
+        return (<>
+
+
+        </>);
+    };
     return (<>
 
         <HeaderComponent />
@@ -12,7 +21,7 @@ const BuyerPage = () => {
 
             <div className="w-1/2 flex justify-center items-center">
                 {/* dummy image about Buying */}
-                <Image src={`/buy.jpg`}  alt="" width={1000} height={1000}/>
+                <Image src={`/buy.jpg`} alt="" width={1000} height={1000} />
             </div>
             <div className="w-1/2 flex justify-center items-center">
 
@@ -22,5 +31,8 @@ const BuyerPage = () => {
 
     </>)
 };
+
+
+
 
 export default BuyerPage;

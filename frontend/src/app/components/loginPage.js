@@ -3,41 +3,44 @@ import { useState } from "react";
 import { useOkto } from "okto-sdk-react";
 
 import { GoogleLogin } from "@react-oauth/google";
+import authenticate from "../apicalls/authenticate";
 
-
+import createWallet from "../apicalls/createwallet";
+import useUserDetails from "./store";
+import getUserDetails from "../apicalls/getuserDetails";
 function LoginPage() {
-const { authenticate } = useOkto();
-const [authToken, setAuthToken] = useState(null);
 
+    const setToken = useUserDetails((state) => state.setToken);
+    const token = useUserDetails((state) => state.token);
+    const removeToken = useUserDetails((state) => state.removeToken);
+    const setWallets = useUserDetails((state) => state.setWallets);
+    const setUserData = useUserDetails((state) => state.setUserData);
 
-console.log(useOkto)
-const handleGoogleLogin = async (credentialResponse) => {
- const idToken = credentialResponse.credential;
+    const handleGoogleLogin = async (credentialResponse) => {
+        const idToken = credentialResponse.credential;
+        let token = await authenticate(idToken);
 
-
-  authenticate(idToken, (authResponse, error) => {
-
-
-      if (authResponse) {
-        setAuthToken(authResponse.auth_token);
-        console.log("Authenticated successfully, auth token:", authResponse.auth_token);
-      } else if (error) {
-            console.error("Authentication error:", error);
+        if (token) {
+            setToken(token);
         }
-    });
- };
+        let walletsData = await createWallet();
+        setWallets(walletsData)
+        let userData = await getUserDetails();
+        setUserData(userData);
 
- return (
-    <div>
-        {!authToken ? (
-        <GoogleLogin
-            onSuccess={handleGoogleLogin}
-            onError={(error) => console.error("Login Failed", error)}
-        />
-        ) : (
-            <p>Authenticated</p>
-        )}
-    </div>
+    };
+
+    return (
+        <>
+            {!token ? (
+                <GoogleLogin
+                    onSuccess={handleGoogleLogin}
+                    onError={(error) => console.error("Login Failed", error)}
+                />
+            ) : (
+                <button onClick={() => { removeToken(), localStorage.clear() }}> Log out</button>
+            )}
+        </>
     );
 }
 
